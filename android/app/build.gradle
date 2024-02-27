@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.auth_demo"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34 //flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -42,7 +42,10 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 
-        manifestPlaceholders += [auth0Domain: "dev-5v8kd0frflwoow88.us.auth0.com", auth0Scheme: "https"]
+        manifestPlaceholders = [
+                auth0Domain : 'dev-5v8kd0frflwoow88.us.auth0.com',
+                auth0Scheme : 'https'
+        ]
     }
 
     buildTypes {

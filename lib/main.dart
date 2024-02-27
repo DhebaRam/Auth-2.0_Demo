@@ -1,9 +1,14 @@
 import 'dart:developer';
 
 import 'package:auth0_flutter/auth0_flutter.dart';
+import 'package:auth_demo/screen/user_reg.dart';
+import 'package:auth_demo/splash_screen.dart';
+import 'package:auth_demo/utils/util.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -13,28 +18,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MainView(),
+    return MultiProvider(
+      providers: [
+        Provider<AppProvider>(create: (_) => AppProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        // home: const UserRegistration(title: 'Google Login',),
+        // home: const MainView(),
+        home: const SplashScreen(),
+      )
     );
   }
 }
@@ -66,8 +63,13 @@ class _MainViewState extends State<MainView> {
           ElevatedButton(
               onPressed: () async {
                 try{
-                  final credentials =
-                  await auth0.webAuthentication().login();
+                  // await auth0.webAuthentication().logout();
+                  WebAuthentication webAuthentication =
+                  auth0.webAuthentication();
+                  Credentials credentials =
+                  // await webAuthentication.login();
+                  await auth0.webAuthentication(scheme: 'demo').login();
+                  log('credentials --- > ${credentials.user}');
 
                   setState(() {
                     _credentials = credentials;
@@ -83,7 +85,7 @@ class _MainViewState extends State<MainView> {
               ProfileView(user: _credentials!.user),
               ElevatedButton(
                   onPressed: () async {
-                    await auth0.webAuthentication().logout();
+                    await auth0.webAuthentication(scheme: 'demo').logout();
 
                     setState(() {
                       _credentials = null;
