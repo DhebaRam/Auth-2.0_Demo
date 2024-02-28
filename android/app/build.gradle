@@ -42,10 +42,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 
-        manifestPlaceholders = [
-                auth0Domain : 'dev-5v8kd0frflwoow88.us.auth0.com',
-                auth0Scheme : 'https'
-        ]
+        manifestPlaceholders += [auth0Domain: "{Your Domain}", auth0Scheme: "flutterdemo"] // 👈 New code //dev-5v8kd0frflwoow878071972288.us.auth0.com*********
     }
 
     buildTypes {
